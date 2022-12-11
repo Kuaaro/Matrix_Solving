@@ -1,10 +1,7 @@
+#include "mat_io.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct{
-    double *list;
-    int m, n;
-}matrix;
 
 matrix *make_matrix(FILE *in){
 
@@ -59,6 +56,12 @@ void show_matr(matrix *in){
     for(i=0; i<in->m; i++){
         for(j=0; j<in->n; j++)
             printf("%f ", in->list[i*in->m+j]);
-        printf("%f\n", in->solutions[i]);
+        printf("| %f\n", in->solutions[i]);
     }
+    printf("\n");
+}
+
+void free_d_arr(double_arr *in){
+    free(in->list);
+    free(in);
 }
