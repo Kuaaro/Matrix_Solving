@@ -16,15 +16,38 @@ double_arr *get_determ(matrix *in){
 
     exit->list=calloc((in->n+1), sizeof(double));
 
+    exit->size = in->n+1;
+
     if(in->m!=in->n){
-        free(exit);
+        printf("Matryca nie jest kwadratowa\n\n");
         free(exit->list);
+        free(exit);
         free(d_pos);
         free(d_neg);
         return NULL;
     }
 
-    exit->size = in->n+1;
+    if(in->m==1){
+        exit->list[1]=in->list[0];
+        exit->list[0]=in->solutions[0];
+        free(d_pos);
+        free(d_neg);
+        return exit;
+    } else if(in->m==2){
+        exit->list[2]=in->list[0]*in->list[3]-in->list[1]*in->list[2];
+        exit->list[0]=in->solutions[0]*in->list[3]-in->list[1]*in->solutions[1];
+        exit->list[1]=in->solutions[1]*in->list[0]-in->list[2]*in->solutions[0];
+        free(d_pos);
+        free(d_neg);
+        return exit;
+    } else if(in->m==0){
+        printf("Matryca zerowa\n\n");
+        free(exit->list);
+        free(exit);
+        free(d_pos);
+        free(d_neg);
+        return NULL;
+    }
 
     for(i=0; i<=in->m; i++){
         d_neg[i]=1;
@@ -46,9 +69,9 @@ double_arr *get_determ(matrix *in){
                     d_pos[n] *= in->list[row+c_pos];
 
                 if(c_neg==n)
-                    d_pos[n] *= in->solutions[i];
+                    d_neg[n] *= in->solutions[i];
                 else
-                    d_pos[n] *= in->list[row+c_neg];
+                    d_neg[n] *= in->list[row+c_neg];
             }
 
         }
@@ -67,12 +90,13 @@ double_arr *get_determ(matrix *in){
 int solve_determ(double_arr *in){
     int i;
     if(!in->list[in->size-1]){
-        printf("Wyznacznik macierzy jest rowny 0");
+        printf("Wyznacznik macierzy jest rowny 0\n\n");
         return 1;
     }
 
     for(i=0; i<in->size-1; i++)
         printf("x%d=%f\n", i, in->list[i]/in->list[in->size-1]);
+    printf("\n");
     free_d_arr(in);
     return 0;
 }
