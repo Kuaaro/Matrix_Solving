@@ -1,0 +1,1 @@
+Rozwiązywanie miacierzy metodą wyznaczników
