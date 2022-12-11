@@ -47,3 +47,9 @@ matrix *make_matrix(FILE *in){
 
     return exit;
 }
+
+void free_matr(matrix *in){
+    free(in->list);
+    free(in->solutions);
+    free(in);
+}
