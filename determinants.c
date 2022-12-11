@@ -1,47 +1,24 @@
+#include "determinants.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "mat_io.h"
-
-typedef struct{
-    double *list;
-    int size;
-}double_arr;
 
 void free_d_arr(double_arr *in){
     free(in->list);
     free(in);
 }
 
-double_arr *solve_matr(matrix *in){
-    double_arr *exit;
-    double *d_pos, *d_neg;
+double_arr *get_determ(matrix *in){
+    double_arr *exit = malloc(sizeof(double_arr));
+    double *d_pos=malloc((in->n+1)*sizeof(double)), *d_neg=malloc((in->n+1)*sizeof(double));
     int i, j, n, row, c_pos, c_neg;
 
-    if(in->m!=in->n)
-        return NULL;
+    exit->list=calloc((in->n+1), sizeof(double));
 
-    if(exit=malloc(sizeof(*exit))==NULL){
+    if(in->m!=in->n){
         free(exit);
-        return NULL;
-    }
-    exit.size = n+1;
-    if(d_pos=malloc((in->n+1)*sizeof(*d_pos))!=NULL){
-        free(exit);
-        free(d_pos);
-        return NULL;
-    }
-
-    if(d_neg=malloc((in->n+1)*sizeof(*d_neg))!=NULL){
-        free(exit);
-        free(d_pos);
-        free(d_neg);
-        return NULL;
-    }
-
-    if(exit->list=calloc((in->n+1)*sizeof(*(exit->list)))==NULL){
         free(exit->list);
-        free(exit);
         free(d_pos);
         free(d_neg);
         return NULL;
@@ -85,4 +62,17 @@ double_arr *solve_matr(matrix *in){
     free(d_pos);
     free(d_neg);
     return exit;
+}
+
+int solve_determ(double_arr *in){
+    int i;
+    if(!in->list[in->size-1]){
+        printf("Wyznacznik macierzy jest rowny 0");
+        return 1;
+    }
+
+    for(i=0; i<in->size-1; i++)
+        printf("x%d=%f\n", i, in->list[i]/in->list[in->size-1]);
+    free_d_arr(in);
+    return 0;
 }
