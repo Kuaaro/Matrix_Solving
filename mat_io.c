@@ -4,6 +4,6 @@
 typedef struct{
     double *list;
     int m, n;
-}
+}matrix;
 
 
